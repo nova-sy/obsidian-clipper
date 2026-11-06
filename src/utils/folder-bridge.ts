@@ -11,5 +11,6 @@ export async function fetchLocalFolders(token: string): Promise<{ vault: string;
 		!(data as { folders: unknown[] }).folders.every(folder => typeof folder === 'string')) {
 		throw new Error('Invalid Folder Bridge response');
 	}
-	return data as { vault: string; folders: string[] };
+	const result = data as { vault: string; folders: string[] };
+	return { ...result, folders: result.folders.filter(folder => !folder.includes('/')) };
 }

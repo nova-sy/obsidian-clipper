@@ -5,7 +5,7 @@
 1. Install and enable the desktop plugin in the Obsidian vault you clip into. Keep that vault open.
 2. Download the Chrome ZIP from [Releases](https://github.com/nova-sy/obsidian-clipper/releases/latest) and extract it. In Chrome, open `chrome://extensions`, enable Developer mode, and select the extracted folder with **Load unpacked**. Disable the Chrome Web Store copy to avoid using the wrong popup. Chrome does not install this ZIP directly.
 3. In Obsidian, open **Settings → Folder Bridge for Web Clipper** and copy the connection token.
-4. In the clipper popup, open the small folder dropdown next to the folder field, choose **Connect or change token…**, and paste the token. Existing folders then appear in the dropdown; choosing one fills the editable folder field.
+4. In the clipper popup, open the folder dropdown next to the folder field, choose **Connect or change token…**, and paste the token. Top-level folders then appear in the dropdown; choosing one fills the editable folder field.
 
 The bridge listens only on `127.0.0.1:27124`, returns folder paths only, and requires the token. If Obsidian is closed or the selected vault differs from the open vault, the original folder field remains usable. The plugin currently serves one open vault per machine.
 

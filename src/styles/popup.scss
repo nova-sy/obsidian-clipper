@@ -155,19 +155,17 @@
 		}
 	}
 	.vault-path-container {
-		display: flex;
-		flex-direction: row;
+		display: grid;
+		grid-template-columns: repeat(2, minmax(0, 1fr));
 		gap: 0.625rem;
 		#path-name-field {
 			min-width: 0;
-			flex: 1;
 		}
 		#folder-select {
-			width: 2.5rem;
-			flex: none;
+			min-width: 0;
 		}
 		#vault-container {
-			flex-grow: 1;
+			grid-column: 1 / -1;
 		}
 		#vault-select {
 			font-weight: var(--clipper-select-font-weight);
