@@ -1,3 +1,18 @@
+> This fork adds a local folder selector for the [Folder Bridge for Web Clipper](https://github.com/nova-sy/obsidian-folder-bridge) desktop plugin.
+
+## Local folder selector
+
+1. Install and enable the desktop plugin in the Obsidian vault you clip into. Keep that vault open.
+2. Build this fork with `npm ci && npm run build:chrome`. In Chrome, open `chrome://extensions`, enable Developer mode, and load the generated `dist` directory as an unpacked extension. Disable the Chrome Web Store copy to avoid using the wrong popup.
+3. In Obsidian, open **Settings → Folder Bridge for Web Clipper** and copy the connection token.
+4. In the clipper popup, open the small folder dropdown next to the folder field, choose **Connect or change token…**, and paste the token. Existing folders then appear in the dropdown; choosing one fills the editable folder field.
+
+The bridge listens only on `127.0.0.1:27124`, returns folder paths only, and requires the token. If Obsidian is closed or the selected vault differs from the open vault, the original folder field remains usable. The plugin currently serves one open vault per machine.
+
+This GitHub fork tracks [obsidianmd/obsidian-clipper](https://github.com/obsidianmd/obsidian-clipper). The weekly **Sync upstream** action merges upstream `main` into this fork. Enable Actions for this fork in GitHub; merge conflicts require manual resolution. Locally, `git fetch upstream && git merge upstream/main` does the same.
+
+## Upstream project
+
 Obsidian Web Clipper helps you highlight and capture the web in your favorite browser. Anything you save is stored as durable Markdown files that you can read offline, and preserve for the long term.
 
 - **[Download Web Clipper](https://obsidian.md/clipper)**

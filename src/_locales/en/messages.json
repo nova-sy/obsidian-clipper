@@ -345,6 +345,18 @@
 	"folder": {
 		"message": "Folder"
 	},
+	"folderBridgeConnect": {
+		"message": "Connect or change token…"
+	},
+	"folderBridgeTokenPrompt": {
+		"message": "Paste the token from Obsidian Settings → Folder Bridge for Web Clipper"
+	},
+	"folderBridgeUnavailable": {
+		"message": "Obsidian unavailable — check the token"
+	},
+	"folderBridgeWrongVault": {
+		"message": "Select the vault open in Obsidian"
+	},
 	"general": {
 		"message": "General"
 	},

@@ -345,6 +345,18 @@
 	"folder": {
 		"message": "文件夹"
 	},
+	"folderBridgeConnect": {
+		"message": "连接或更换令牌…"
+	},
+	"folderBridgeTokenPrompt": {
+		"message": "粘贴 Obsidian 设置 → Folder Bridge for Web Clipper 中的令牌"
+	},
+	"folderBridgeUnavailable": {
+		"message": "无法连接 Obsidian，请检查令牌"
+	},
+	"folderBridgeWrongVault": {
+		"message": "请选择 Obsidian 中打开的知识库"
+	},
 	"general": {
 		"message": "常规"
 	},

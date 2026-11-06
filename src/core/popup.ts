@@ -23,6 +23,7 @@ import { sanitizeFileName } from '../utils/string-utils';
 import { saveFile } from '../utils/file-utils';
 import { translatePage, getMessage, setupLanguageAndDirection } from '../utils/i18n';
 import { formatPropertyValue } from '../utils/shared';
+import { fetchLocalFolders } from '../utils/folder-bridge';
 
 interface ReaderModeResponse {
 	success: boolean;
@@ -378,6 +379,7 @@ document.addEventListener('DOMContentLoaded', async function() {
 			try {
 				// DOM-dependent initializations
 				updateVaultDropdown(loadedSettings.vaults);
+				setupFolderSelector();
 				populateTemplateDropdown();
 				setupEventListeners(currentTabId);
 				await initializeUI();
@@ -739,6 +741,7 @@ async function refreshFields(tabId: number, { checkTemplateTriggers = true, rebu
 		} else {
 			throw new Error('Unable to extract page content.');
 		}
+		await updateFolderSelector();
 	} catch (error) {
 		console.error('Error refreshing fields:', error);
 		const errorMessage = error instanceof Error ? error.message : 'An unknown error occurred';
@@ -840,13 +843,17 @@ function buildTemplateFieldsSkeleton(template: Template | null) {
 	}
 
 	const pathField = document.getElementById('path-name-field') as HTMLInputElement;
+	const folderSelector = document.getElementById('folder-select') as HTMLSelectElement;
 	const pathContainer = document.querySelector('.vault-path-container') as HTMLElement;
 	if (pathField && pathContainer) {
 		const isDailyNote = template.behavior === 'append-daily' || template.behavior === 'prepend-daily';
 		if (isDailyNote) {
 			pathField.style.display = 'none';
+			folderSelector.style.display = 'none';
 		} else {
 			pathContainer.style.display = 'flex';
+			pathField.style.display = '';
+			folderSelector.style.display = '';
 			pathField.setAttribute('data-template-value', template.path);
 		}
 	}
@@ -1079,7 +1086,48 @@ function updateVaultDropdown(vaults: string[]) {
 	vaultDropdown.addEventListener('change', () => {
 		lastSelectedVault = vaultDropdown.value;
 		setLocalStorage('lastSelectedVault', lastSelectedVault);
+		void updateFolderSelector();
 	});
+}
+
+function setupFolderSelector() {
+	const selector = document.getElementById('folder-select') as HTMLSelectElement;
+	selector.addEventListener('change', async () => {
+		if (selector.value === '__connect__') {
+			const token = window.prompt(getMessage('folderBridgeTokenPrompt'))?.trim();
+			if (token) {
+				await setLocalStorage('folderBridgeToken', token);
+				await updateFolderSelector();
+			} else {
+				selector.value = '';
+			}
+			return;
+		}
+		const pathField = document.getElementById('path-name-field') as HTMLInputElement;
+		if (selector.value) pathField.value = selector.value;
+	});
+}
+
+async function updateFolderSelector() {
+	const selector = document.getElementById('folder-select') as HTMLSelectElement;
+	const vault = (document.getElementById('vault-select') as HTMLSelectElement).value;
+	selector.replaceChildren(new Option('⌄', ''));
+	const token = await getLocalStorage('folderBridgeToken') as string | undefined;
+	if (token) {
+		try {
+			const result = await fetchLocalFolders(token);
+			if (vault !== (document.getElementById('vault-select') as HTMLSelectElement).value) return;
+			if (!vault || vault === result.vault) {
+				for (const path of result.folders) selector.add(new Option(path, path));
+			} else {
+				selector.add(new Option(getMessage('folderBridgeWrongVault'), '', true));
+			}
+		} catch {
+			selector.add(new Option(getMessage('folderBridgeUnavailable'), '', true));
+		}
+	}
+	selector.add(new Option(getMessage('folderBridgeConnect'), '__connect__'));
+	selector.value = '';
 }
 
 function refreshPopup() {
