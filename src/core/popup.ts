@@ -1122,8 +1122,13 @@ async function updateFolderSelector() {
 			} else {
 				selector.add(new Option(getMessage('folderBridgeWrongVault'), '', true));
 			}
-		} catch {
-			selector.add(new Option(getMessage('folderBridgeUnavailable'), '', true));
+		} catch (error) {
+			const reason = error instanceof Error ? error.message : '';
+			const message = reason === 'Folder Bridge returned 401' ? 'folderBridgeUnauthorized'
+				: reason === 'Folder Bridge returned 403' ? 'folderBridgeForbidden'
+				: 'folderBridgeUnavailable';
+			selector.add(new Option(getMessage(message), '', true));
+			console.warn('Folder Bridge:', error);
 		}
 	}
 	selector.add(new Option(getMessage('folderBridgeConnect'), '__connect__'));

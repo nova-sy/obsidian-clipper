@@ -352,7 +352,13 @@
 		"message": "Paste the token from Obsidian Settings → Folder Bridge for Web Clipper"
 	},
 	"folderBridgeUnavailable": {
-		"message": "Obsidian unavailable — check the token"
+		"message": "Cannot reach local Obsidian"
+	},
+	"folderBridgeUnauthorized": {
+		"message": "Invalid token — reconnect"
+	},
+	"folderBridgeForbidden": {
+		"message": "Obsidian rejected this extension"
 	},
 	"folderBridgeWrongVault": {
 		"message": "Select the vault open in Obsidian"

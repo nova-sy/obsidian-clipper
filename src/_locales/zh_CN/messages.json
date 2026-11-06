@@ -352,7 +352,13 @@
 		"message": "粘贴 Obsidian 设置 → Folder Bridge for Web Clipper 中的令牌"
 	},
 	"folderBridgeUnavailable": {
-		"message": "无法连接 Obsidian，请检查令牌"
+		"message": "无法连接本机 Obsidian"
+	},
+	"folderBridgeUnauthorized": {
+		"message": "令牌无效，请重新连接"
+	},
+	"folderBridgeForbidden": {
+		"message": "Obsidian 拒绝此扩展"
 	},
 	"folderBridgeWrongVault": {
 		"message": "请选择 Obsidian 中打开的知识库"
