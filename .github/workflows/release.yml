@@ -1,0 +1,36 @@
+name: Release Chrome extension
+
+on:
+  push:
+    tags:
+      - 'v*-local.*'
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci
+      - run: npm test
+        env:
+          TZ: America/Los_Angeles
+      - run: npm run build:chrome
+      - name: Publish release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          version=$(node -p 'require("./package.json").version')
+          case "$GITHUB_REF_NAME" in
+            "v${version}-local."*) ;;
+            *) echo "Tag does not match package version" >&2; exit 1 ;;
+          esac
+          gh release create "$GITHUB_REF_NAME" "builds/obsidian-web-clipper-${version}-chrome.zip" \
+            --verify-tag --title "Web Clipper ${GITHUB_REF_NAME}" \
+            --notes 'Download the Chrome ZIP, extract it, then load the extracted folder at chrome://extensions using Load unpacked. Install the companion Obsidian Folder Bridge plugin from its Releases page.'

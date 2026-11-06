@@ -3,13 +3,15 @@
 ## Local folder selector
 
 1. Install and enable the desktop plugin in the Obsidian vault you clip into. Keep that vault open.
-2. Build this fork with `npm ci && npm run build:chrome`. In Chrome, open `chrome://extensions`, enable Developer mode, and load the generated `dist` directory as an unpacked extension. Disable the Chrome Web Store copy to avoid using the wrong popup.
+2. Download the Chrome ZIP from [Releases](https://github.com/nova-sy/obsidian-clipper/releases/latest) and extract it. In Chrome, open `chrome://extensions`, enable Developer mode, and select the extracted folder with **Load unpacked**. Disable the Chrome Web Store copy to avoid using the wrong popup. Chrome does not install this ZIP directly.
 3. In Obsidian, open **Settings → Folder Bridge for Web Clipper** and copy the connection token.
 4. In the clipper popup, open the small folder dropdown next to the folder field, choose **Connect or change token…**, and paste the token. Existing folders then appear in the dropdown; choosing one fills the editable folder field.
 
 The bridge listens only on `127.0.0.1:27124`, returns folder paths only, and requires the token. If Obsidian is closed or the selected vault differs from the open vault, the original folder field remains usable. The plugin currently serves one open vault per machine.
 
 This GitHub fork tracks [obsidianmd/obsidian-clipper](https://github.com/obsidianmd/obsidian-clipper). The weekly **Sync upstream** action merges upstream `main` into this fork. Enable Actions for this fork in GitHub; merge conflicts require manual resolution. Locally, `git fetch upstream && git merge upstream/main` does the same.
+
+The fork uses a different Chrome extension ID, so its settings are separate from the Web Store copy. Export all settings in the old extension and import them into this fork if needed. Pushing a tag such as `v1.7.1-local.1` runs tests, builds the Chrome ZIP, and publishes it to Releases. New upstream commits are packaged when a new local release tag is pushed.
 
 ## Upstream project
 
